@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$BLOODNUT</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --accent: #ff4d2a;
+      --accent2: #ff7a1a;
+      --bg: #060606;
+      --surface: #0d0d0d;
+      --surface2: #141414;
+      --border: rgba(255,77,42,0.12);
+      --border-hover: rgba(255,77,42,0.35);
+      --text: #e8e8e8;
+      --text-dim: #6b6b6b;
+      --glow: rgba(255,77,42,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(6,6,6,0.6);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    nav.scrolled {
+      padding: 0.8rem 3rem;
+      background: rgba(6,6,6,0.9);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .logo span {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-right a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-right a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-fill {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 30px var(--glow);
+    }
+
+    .btn-fill:hover {
+      background: var(--accent2);
+      box-shadow: 0 0 50px rgba(255,77,42,0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-hover);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      background: rgba(255,77,42,0.05);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    .hero-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.2;
+    }
+
+    .hero-video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,6,6,0.4) 0%, var(--bg) 100%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      max-width: 720px;
+    }
+
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(255,77,42,0.08);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-chip .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(4rem, 12vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -3px;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── CA BAR ── */
+    .ca-bar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .ca-bar:hover { background: var(--surface2); }
+
+    .ca-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+
+    .ca-address {
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+
+    .ca-copy {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border-hover);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .ca-bar:hover .ca-copy {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      position: relative;
+      padding: 6rem 3rem;
+    }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: #fff;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ── VIDEO GRID ── */
+    .vid-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .vid-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .vid-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 40px var(--glow);
+      transform: translateY(-4px);
+    }
+
+    .vid-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .vid-card .play-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,6,6,0.3);
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+
+    .vid-card:hover .play-icon { opacity: 0; }
+
+    .play-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: #fff;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    }
+
+    /* ── STATS ROW ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .stat:hover { background: var(--surface2); }
+
+    .stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+
+    /* ── ABOUT CARDS ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .card {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+      transition: background 0.2s;
+    }
+
+    .card:hover { background: var(--surface2); }
+
+    .card-num {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: rgba(255,77,42,0.15);
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+
+    /* ── STEPS ── */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 80px 200px 1fr;
+      align-items: center;
+      background: var(--surface);
+      padding: 1.75rem 2rem;
+      transition: background 0.2s;
+    }
+
+    .step-row:hover { background: var(--surface2); }
+
+    .step-num {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: rgba(255,77,42,0.25);
+    }
+
+    .step-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* ── CTA ── */
+    .cta {
+      text-align: center;
+      padding: 8rem 2rem;
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      color: #fff;
+      letter-spacing: -2px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .cta p {
+      color: var(--text-dim);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    /* ── SOCIAL LINKS ── */
+    .cta-socials {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      position: relative;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+      background: rgba(255,77,42,0.05);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--surface2);
+      border: 1px solid var(--border-hover);
+      color: var(--text);
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-right a:not(.btn) { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      .vid-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .cards { grid-template-columns: 1fr; }
+      .step-row { grid-template-columns: 50px 1fr; gap: 0.5rem; }
+      .step-desc { grid-column: 1 / -1; margin-top: 0.25rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    @media (max-width: 500px) {
+      .vid-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .ca-address { font-size: 0.6rem; }
+      .hero h1 { letter-spacing: -1px; }
+    }
+
+    /* ── FADE IN ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="logo">
+      <img src="images/logo.png" alt="Bloodnut">
+      <span>BLOODNUT</span>
+    </a>
+    <div class="nav-right">
+      <a href="#videos">Videos</a>
+      <a href="#about">About</a>
+      <a href="#buy">Buy</a>
+      <a href="https://www.tiktok.com/@dani_villarr" target="_blank">TikTok</a>
+      <a href="https://x.com/i/communities/2023732888261328929" target="_blank">X</a>
+      <a href="https://pump.fun/coin/HBJUeugfgJ3zWYMMP4cULbZ9bjnZbb6WG9cBcWNxpump" target="_blank" class="btn btn-fill">Buy Now</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="videos/vid1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-chip">
+        <span class="dot"></span>
+        Live on Solana
+      </div>
+      <h1><span>BLOOD</span>NUT</h1>
+      <p class="hero-sub">The red ruffed lemur of Solana. No pretense, no roadmap, just pure untamed energy from the jungles of Madagascar.</p>
+      <div class="hero-actions">
+        <a href="https://pump.fun/coin/HBJUeugfgJ3zWYMMP4cULbZ9bjnZbb6WG9cBcWNxpump" target="_blank" class="btn btn-fill">Buy on Pump.fun</a>
+        <a href="#about" class="btn btn-ghost">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CA BAR -->
+  <div class="ca-bar" onclick="copyCA()">
+    <span class="ca-label">CA</span>
+    <span class="ca-address" id="ca-text">HBJUeugfgJ3zWYMMP4cULbZ9bjnZbb6WG9cBcWNxpump</span>
+    <span class="ca-copy">Copy</span>
+  </div>
+
+  <!-- STATS -->
+  <div class="section" style="padding-top:4rem;padding-bottom:4rem;">
+    <div class="inner reveal">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val">1B</div>
+          <div class="stat-label">Supply</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">0%</div>
+          <div class="stat-label">Tax</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">100%</div>
+          <div class="stat-label">Community</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">SOL</div>
+          <div class="stat-label">Network</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- VIDEOS -->
+  <div class="section" id="videos">
+    <div class="inner">
+      <div class="section-header reveal">
+        <div class="section-label">Media</div>
+        <div class="section-title">Meet Bloodnut</div>
+      </div>
+      <div class="vid-grid reveal">
+        <div class="vid-card" onclick="toggleVideo(this)">
+          <video loop muted playsinline preload="metadata">
+            <source src="videos/vid1.mp4" type="video/mp4">
+          </video>
+          <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="vid-card" onclick="toggleVideo(this)">
+          <video loop muted playsinline preload="metadata">
+            <source src="videos/vid2.mp4" type="video/mp4">
+          </video>
+          <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="vid-card" onclick="toggleVideo(this)">
+          <video loop muted playsinline preload="metadata">
+            <source src="videos/vid3.mp4" type="video/mp4">
+          </video>
+          <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="vid-card" onclick="toggleVideo(this)">
+          <video loop muted playsinline preload="metadata">
+            <source src="videos/vid4.mp4" type="video/mp4">
+          </video>
+          <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <div class="inner">
+      <div class="section-header reveal">
+        <div class="section-label">About</div>
+        <div class="section-title">What is Bloodnut?</div>
+      </div>
+      <div class="cards reveal">
+        <div class="card">
+          <div class="card-num">01</div>
+          <h3>Born Wild</h3>
+          <p>Named after the red ruffed lemur — one of nature's most striking primates. $BLOODNUT channels that raw, untamed energy into the memecoin space.</p>
+        </div>
+        <div class="card">
+          <div class="card-num">02</div>
+          <h3>Community First</h3>
+          <p>No VC money. No insider deals. Powered purely by the community. By the people, for the apes. We climb together.</p>
+        </div>
+        <div class="card">
+          <div class="card-num">03</div>
+          <h3>Solana Native</h3>
+          <p>Just like the red ruffed lemur is endemic to Madagascar, $BLOODNUT is native to Solana. Fast, fierce, and impossible to ignore.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOW TO BUY -->
+  <div class="section" id="buy">
+    <div class="inner">
+      <div class="section-header reveal">
+        <div class="section-label">Get Started</div>
+        <div class="section-title">How to Buy</div>
+      </div>
+      <div class="steps-list reveal">
+        <div class="step-row">
+          <div class="step-num">01</div>
+          <div class="step-name">Get a Wallet</div>
+          <div class="step-desc">Download Phantom or Solflare from the official site or app store.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">02</div>
+          <div class="step-name">Get SOL</div>
+          <div class="step-desc">Buy SOL on any exchange and send it to your wallet.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">03</div>
+          <div class="step-name">Visit Pump.fun</div>
+          <div class="step-desc">Connect your wallet and paste the contract address.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">04</div>
+          <div class="step-name">Swap</div>
+          <div class="step-desc">Enter your SOL amount and confirm. Welcome to the troop.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Make a Difference</h2>
+    <p>The canopy is calling.</p>
+    <a href="https://pump.fun/coin/HBJUeugfgJ3zWYMMP4cULbZ9bjnZbb6WG9cBcWNxpump" target="_blank" class="btn btn-fill" style="position:relative;">Buy $BLOODNUT</a>
+    <div class="cta-socials">
+      <a href="https://www.tiktok.com/@dani_villarr" target="_blank" class="social-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.71a8.2 8.2 0 0 0 4.76 1.52v-3.4a4.85 4.85 0 0 1-1-.14z"/></svg>
+        TikTok
+      </a>
+      <a href="https://x.com/i/communities/2023732888261328929" target="_blank" class="social-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X Community
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>$BLOODNUT is a memecoin with no intrinsic value or expectation of financial return. DYOR.</p>
+    <p>&copy; 2026 BLOODNUT</p>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <script>
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Copy CA
+    function copyCA() {
+      navigator.clipboard.writeText(document.getElementById('ca-text').textContent).then(() => {
+        const t = document.getElementById('toast');
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
+      });
+    }
+
+    // Toggle video play/pause
+    function toggleVideo(card) {
+      const video = card.querySelector('video');
+      const icon = card.querySelector('.play-icon');
+      if (video.paused) {
+        video.play();
+        icon.style.opacity = '0';
+      } else {
+        video.pause();
+        icon.style.opacity = '1';
+      }
+    }
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
